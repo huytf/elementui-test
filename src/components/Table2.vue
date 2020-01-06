@@ -9,6 +9,7 @@
 
 <script>
 export default {
+  name: "table2",
   data() {
     return {
       tableData: []
@@ -21,10 +22,10 @@ export default {
       })
       .then(res => {
         console.log(res);
-        this.tableData = res.data.list.map(item=>{
-            item.sextext = item.sex === 0 ? '女' : '男'
-            return item
-        })
+        this.tableData = res.data.list.map(item => {
+          item.sextext = item.sex === 0 ? "女" : "男";
+          return item;
+        });
       });
   }
 };

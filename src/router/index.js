@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 import Home from '../views/Home.vue'
 import Hello from '../components/HelloWorld.vue'
 import Table1 from '../components/Table1.vue'
@@ -13,29 +14,30 @@ const routes = [
     component: Home,
     children: [
       {
-        path:'/',
+        path: '/',
         name: 'hello',
-        component: Hello
+        component: Hello,
+        meta:{
+          name:'首页'
+        }
       },
       {
-        path:'table1',
+        path: 'table1',
         name: 'table1',
-        component: Table1
+        component: Table1,
+        meta:{
+          name:'表格1'
+        }
       },
       {
-        path:'table2',
+        path: 'table2',
         name: 'table2',
-        component: Table2
+        component: Table2,
+        meta:{
+          name:'表格2'
+        }
       }
     ]
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   }
 ]
 
@@ -43,9 +45,16 @@ const router = new VueRouter({
   routes
 })
 
-const routerPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch(error=> error)
-}
+router.beforeEach((to, from, next) => {
+  // console.log(to,from)
+  next()
+  store.dispatch('worktabRoute', {
+    to: {
+      title: to.meta.name,
+      name: to.name,
+      closable: true
+    }
+  })
+})
 
 export default router

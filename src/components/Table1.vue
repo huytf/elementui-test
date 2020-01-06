@@ -8,6 +8,7 @@
 
 <script>
 export default {
+  name:'table1',
   data() {
     const item = {
       date: "2016-05-02",
@@ -15,7 +16,7 @@ export default {
       address: "上海市普陀区金沙江路 1518 弄"
     };
     return {
-      tableData: Array(20).fill(item)
+      tableData: Array(10).fill(item)
     };
   }
 };
