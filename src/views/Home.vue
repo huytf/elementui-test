@@ -1,7 +1,12 @@
 <template>
   <el-container style="height: 880px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['table']" :default-active="activeTab" @select="select">
+      <el-menu
+        class="menu"
+        :default-openeds="['table']"
+        :default-active="activeTab"
+        @select="select"
+      >
         <!-- <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-message"></i>导航一
@@ -58,7 +63,7 @@
             <template slot="title">选项4</template>
             <el-menu-item index="3-4-1">选项4-1</el-menu-item>
           </el-submenu>
-        </el-submenu> -->
+        </el-submenu>-->
       </el-menu>
     </el-aside>
 
@@ -75,7 +80,7 @@
         </el-tabs>
       </el-header>
 
-      <el-main>
+      <el-main style="padding-bottom:0;">
         <keep-alive :include="openTabs">
           <router-view></router-view>
         </keep-alive>
@@ -87,6 +92,9 @@
 <style>
 .el-aside {
   color: #333;
+}
+.menu {
+  text-align: center;
 }
 </style>
 
@@ -114,7 +122,7 @@ export default {
     this.activeTab = this.$store.state.worktab.current.name;
   },
   methods: {
-    select(name){
+    select(name) {
       if (this.$store.state.worktab.current.name !== name) {
         this.$router.push({ name });
       }

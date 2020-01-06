@@ -1,5 +1,17 @@
 import Mock from 'mockjs'
 const mock = Mock.mock
+
+const list = []
+for (let i = 0; i < 100; i++) {
+    const template = mock({
+        'id': i+1,
+        username: '@cname',
+        'sex|0-1': 1,
+        address: '@county(true)'
+    })
+    list.push(template)
+}
+
 export default {
     'GET /api/user': {
         username: 'admin',
@@ -7,16 +19,21 @@ export default {
     },
     'GET /api/list': function (req, res) {
         let query = req.query || {};
-        return res.json(mock({
-            limit: query.limit,
-            offset: query.offset,
-            'list|50': [{
-                'id|+1': Number(query.limit),
-                username: '@cname',
-                'sex|0-1': 1,
-                address: '@county(true)'
-            }]
-        }))
+        let {offset,limit} = query
+        offset = Number(offset)
+        limit = Number(limit)
+        let total = list.length
+        let len = total / limit
+        let totalPages = len - parseInt(len) > 0 ? parseInt(len) + 1 : len
+        let newDataList = list.slice(offset-1, offset + limit-1)
+        return res.json({
+            limit: limit,
+            offset: offset,
+            list:newDataList,
+            len,
+            total,
+            totalPages
+        })
     },
     'GET /api/userinfo/:id': (req, res) => {
         return res.json({
